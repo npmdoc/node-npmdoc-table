@@ -1,0 +1,286 @@
+<html><head></head><body><div class="apidocDiv">
+<style>
+/*csslint
+*/
+.apidocDiv {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.apidocDiv a[href] {
+    color: #33f;
+    font-weight: bold;
+    text-decoration: none;
+}
+.apidocDiv a[href]:hover {
+    text-decoration: underline;
+}
+.apidocCodeCommentSpan {
+    background: #bbf;
+    color: #000;
+    display: block;
+}
+.apidocCodeKeywordSpan {
+    color: #d00;
+    font-weight: bold;
+}
+.apidocCodePre {
+    background: #eef;
+    border: 1px solid;
+    color: #777;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+.apidocFooterDiv {
+    margin-top: 20px;
+    text-align: center;
+}
+.apidocModuleLi {
+    margin-top: 10px;
+}
+.apidocSectionDiv {
+    border-top: 1px solid;
+    margin-top: 20px;
+}
+.apidocSignatureSpan {
+    color: #777;
+    font-weight: bold;
+}
+</style>
+<h1>api documentation for
+    <a href="https://github.com/gajus/table#readme">table (v4.0.1)</a>
+</h1>
+<h4>Formats data into a string table.</h4>
+<div class="apidocSectionDiv"><a href="#apidoc.tableOfContents" id="apidoc.tableOfContents"><h1>table of contents</h1></a><ol>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.table">module table</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.table.table">
+            function <span class="apidocSignatureSpan"></span>table
+            <span class="apidocSignatureSpan">(data)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.table.createStream">
+            function <span class="apidocSignatureSpan">table.</span>createStream
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.table.getBorderCharacters">
+            function <span class="apidocSignatureSpan">table.</span>getBorderCharacters
+            <span class="apidocSignatureSpan">(name === 'honeywell')</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+</ol></div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.table" id="apidoc.module.table">module table</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.table.table" id="apidoc.element.table.table">
+        function <span class="apidocSignatureSpan"></span>table
+        <span class="apidocSignatureSpan">(data)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">table = function (data) {
+  let userConfig = arguments.length &gt; 1 &amp;&amp; arguments[1] !== undefined ? arguments[1] : {};
+
+  let rows;
+
+  (0, _validateTableData2.default)(data);
+
+  rows = (0, _stringifyTableData2.default)(data);
+
+  const config = (0, _makeConfig2.default)(rows, userConfig);
+
+  rows = (0, _truncateTableData2.default)(data, config);
+
+  const rowHeightIndex = (0, _calculateRowHeightIndex2.default)(rows, config);
+
+  rows = (0, _mapDataUsingRowHeightIndex2.default)(rows, rowHeightIndex, config);
+  rows = (0, _alignTableData2.default)(rows, config);
+  rows = (0, _padTableData2.default)(rows, config);
+
+  const cellWidthIndex = (0, _calculateCellWidthIndex2.default)(rows[0]);
+
+  return (0, _drawTable2.default)(rows, config.border, cellWidthIndex, rowHeightIndex, config.drawHorizontalLine);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.table.createStream" id="apidoc.element.table.createStream">
+        function <span class="apidocSignatureSpan">table.</span>createStream
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">createStream = function () {
+  let userConfig = arguments.length &gt; 0 &amp;&amp; arguments[0] !== undefined ? arguments[0] : {};
+
+  const config = (0, _makeStreamConfig2.default)(userConfig);
+
+  const columnWidthIndex = _lodash2.default.mapValues(config.columns, column =&gt; {
+    return column.width + column.paddingLeft + column.paddingRight;
+  });
+
+  let empty;
+
+  empty = true;
+
+  return {
+<span class="apidocCodeCommentSpan">    /**
+     * @param {string[]} row
+     * @returns {undefined}
+     */
+</span>    write: row =&gt; {
+      if (row.length !== config.columnCount) {
+        throw new Error('Row cell count does not match the config.columnCount.');
+      }
+
+      if (empty) {
+        empty = false;
+
+        return create(row, columnWidthIndex, config);
+      } else {
+        return append(row, columnWidthIndex, config);
+      }
+    }
+  };
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.table.getBorderCharacters" id="apidoc.element.table.getBorderCharacters">
+        function <span class="apidocSignatureSpan">table.</span>getBorderCharacters
+        <span class="apidocSignatureSpan">(name === 'honeywell')</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">name =&gt; {
+  if (name === 'honeywell') {
+    return {
+      topBody: 'â•',
+      topJoin: 'â•¤',
+      topLeft: 'â•”',
+      topRight: 'â•—',
+
+      bottomBody: 'â•',
+      bottomJoin: 'â•§',
+      bottomLeft: 'â•š',
+      bottomRight: 'â•',
+
+      bodyLeft: 'â•‘',
+      bodyRight: 'â•‘',
+      bodyJoin: 'â”‚',
+
+      joinBody: 'â”€',
+      joinLeft: 'â•Ÿ',
+      joinRight: 'â•¢',
+      joinJoin: 'â”¼'
+    };
+  }
+
+  if (name === 'norc') {
+    return {
+      topBody: 'â”€',
+      topJoin: 'â”¬',
+      topLeft: 'â”Œ',
+      topRight: 'â”',
+
+      bottomBody: 'â”€',
+      bottomJoin: 'â”´',
+      bottomLeft: 'â””',
+      bottomRight: 'â”˜',
+
+      bodyLeft: 'â”‚',
+      bodyRight: 'â”‚',
+      bodyJoin: 'â”‚',
+
+      joinBody: 'â”€',
+      joinLeft: 'â”œ',
+      joinRight: 'â”¤',
+      joinJoin: 'â”¼'
+    };
+  }
+
+  if (name === 'ramac') {
+    return {
+      topBody: '-',
+      topJoin: '+',
+      topLeft: '+',
+      topRight: '+',
+
+      bottomBody: '-',
+      bottomJoin: '+',
+      bottomLeft: '+',
+      bottomRight: '+',
+
+      bodyLeft: '|',
+      bodyRight: '|',
+      bodyJoin: '|',
+
+      joinBody: '-',
+      joinLeft: '|',
+      joinRight: '|',
+      joinJoin: '|'
+    };
+  }
+
+  if (name === 'void') {
+    return {
+      topBody: '',
+      topJoin: '',
+      topLeft: '',
+      topRight: '',
+
+      bottomBody: '',
+      bottomJoin: '',
+      bottomLeft: '',
+      bottomRight: '',
+
+      bodyLeft: '',
+      bodyRight: '',
+      bodyJoin: '',
+
+      joinBody: '',
+      joinLeft: '',
+      joinRight: '',
+      joinJoin: ''
+    };
+  }
+
+  throw new Error('Unknown border template "' + name + '".');
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocFooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>
+</body></html>
