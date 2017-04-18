@@ -1,9 +1,14 @@
-# api documentation for  [table (v4.0.1)](https://github.com/gajus/table#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-table.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-table) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-table.svg)](https://travis-ci.org/npmdoc/node-npmdoc-table)
+# npmdoc-table
+
+#### api documentation for  [table (v4.0.1)](https://github.com/gajus/table#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-table.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-table) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-table.svg)](https://travis-ci.org/npmdoc/node-npmdoc-table)
+
 #### Formats data into a string table.
 
-[![NPM](https://nodei.co/npm/table.png?downloads=true)](https://www.npmjs.com/package/table)
+[![NPM](https://nodei.co/npm/table.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/table)
 
-[![apidoc](https://npmdoc.github.io/node-npmdoc-table/build/screenCapture.buildNpmdoc.browser._2Fhome_2Ftravis_2Fbuild_2Fnpmdoc_2Fnode-npmdoc-table_2Ftmp_2Fbuild_2Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-table/build/apidoc.html)
+- [https://npmdoc.github.io/node-npmdoc-table/build/apidoc.html](https://npmdoc.github.io/node-npmdoc-table/build/apidoc.html)
+
+[![apidoc](https://npmdoc.github.io/node-npmdoc-table/build/screenCapture.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-table/build/apidoc.html)
 
 ![npmPackageListing](https://npmdoc.github.io/node-npmdoc-table/build/screenCapture.npmPackageListing.svg)
 
@@ -18,7 +23,6 @@
 {
     "author": {
         "name": "Gajus Kuizinas",
-        "email": "gajus@gajus.com",
         "url": "http://gajus.com"
     },
     "bugs": {
@@ -68,8 +72,7 @@
     "main": "./dist/index.js",
     "maintainers": [
         {
-            "name": "gajus",
-            "email": "gk@anuary.com"
+            "name": "gajus"
         }
     ],
     "name": "table",
@@ -85,7 +88,6 @@
         "sourceMap": false
     },
     "optionalDependencies": {},
-    "readme": "ERROR: No README data found!",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/gajus/table.git"
@@ -101,197 +103,6 @@
     },
     "version": "4.0.1"
 }
-```
-
-
-
-# <a name="apidoc.tableOfContents"></a>[table of contents](#apidoc.tableOfContents)
-
-#### [module table](#apidoc.module.table)
-1.  [function <span class="apidocSignatureSpan"></span>table (data)](#apidoc.element.table.table)
-1.  [function <span class="apidocSignatureSpan">table.</span>createStream ()](#apidoc.element.table.createStream)
-1.  [function <span class="apidocSignatureSpan">table.</span>getBorderCharacters (name === 'honeywell')](#apidoc.element.table.getBorderCharacters)
-
-
-
-# <a name="apidoc.module.table"></a>[module table](#apidoc.module.table)
-
-#### <a name="apidoc.element.table.table"></a>[function <span class="apidocSignatureSpan"></span>table (data)](#apidoc.element.table.table)
-- description and source-code
-```javascript
-table = function (data) {
-  let userConfig = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-  let rows;
-
-  (0, _validateTableData2.default)(data);
-
-  rows = (0, _stringifyTableData2.default)(data);
-
-  const config = (0, _makeConfig2.default)(rows, userConfig);
-
-  rows = (0, _truncateTableData2.default)(data, config);
-
-  const rowHeightIndex = (0, _calculateRowHeightIndex2.default)(rows, config);
-
-  rows = (0, _mapDataUsingRowHeightIndex2.default)(rows, rowHeightIndex, config);
-  rows = (0, _alignTableData2.default)(rows, config);
-  rows = (0, _padTableData2.default)(rows, config);
-
-  const cellWidthIndex = (0, _calculateCellWidthIndex2.default)(rows[0]);
-
-  return (0, _drawTable2.default)(rows, config.border, cellWidthIndex, rowHeightIndex, config.drawHorizontalLine);
-}
-```
-- example usage
-```shell
-n/a
-```
-
-#### <a name="apidoc.element.table.createStream"></a>[function <span class="apidocSignatureSpan">table.</span>createStream ()](#apidoc.element.table.createStream)
-- description and source-code
-```javascript
-createStream = function () {
-  let userConfig = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-  const config = (0, _makeStreamConfig2.default)(userConfig);
-
-  const columnWidthIndex = _lodash2.default.mapValues(config.columns, column => {
-    return column.width + column.paddingLeft + column.paddingRight;
-  });
-
-  let empty;
-
-  empty = true;
-
-  return {
-<span class="apidocCodeCommentSpan">    /**
-     * @param {string[]} row
-     * @returns {undefined}
-     */
-</span>    write: row => {
-      if (row.length !== config.columnCount) {
-        throw new Error('Row cell count does not match the config.columnCount.');
-      }
-
-      if (empty) {
-        empty = false;
-
-        return create(row, columnWidthIndex, config);
-      } else {
-        return append(row, columnWidthIndex, config);
-      }
-    }
-  };
-}
-```
-- example usage
-```shell
-n/a
-```
-
-#### <a name="apidoc.element.table.getBorderCharacters"></a>[function <span class="apidocSignatureSpan">table.</span>getBorderCharacters (name === 'honeywell')](#apidoc.element.table.getBorderCharacters)
-- description and source-code
-```javascript
-name => {
-  if (name === 'honeywell') {
-    return {
-      topBody: '═',
-      topJoin: '╤',
-      topLeft: '╔',
-      topRight: '╗',
-
-      bottomBody: '═',
-      bottomJoin: '╧',
-      bottomLeft: '╚',
-      bottomRight: '╝',
-
-      bodyLeft: '║',
-      bodyRight: '║',
-      bodyJoin: '│',
-
-      joinBody: '─',
-      joinLeft: '╟',
-      joinRight: '╢',
-      joinJoin: '┼'
-    };
-  }
-
-  if (name === 'norc') {
-    return {
-      topBody: '─',
-      topJoin: '┬',
-      topLeft: '┌',
-      topRight: '┐',
-
-      bottomBody: '─',
-      bottomJoin: '┴',
-      bottomLeft: '└',
-      bottomRight: '┘',
-
-      bodyLeft: '│',
-      bodyRight: '│',
-      bodyJoin: '│',
-
-      joinBody: '─',
-      joinLeft: '├',
-      joinRight: '┤',
-      joinJoin: '┼'
-    };
-  }
-
-  if (name === 'ramac') {
-    return {
-      topBody: '-',
-      topJoin: '+',
-      topLeft: '+',
-      topRight: '+',
-
-      bottomBody: '-',
-      bottomJoin: '+',
-      bottomLeft: '+',
-      bottomRight: '+',
-
-      bodyLeft: '|',
-      bodyRight: '|',
-      bodyJoin: '|',
-
-      joinBody: '-',
-      joinLeft: '|',
-      joinRight: '|',
-      joinJoin: '|'
-    };
-  }
-
-  if (name === 'void') {
-    return {
-      topBody: '',
-      topJoin: '',
-      topLeft: '',
-      topRight: '',
-
-      bottomBody: '',
-      bottomJoin: '',
-      bottomLeft: '',
-      bottomRight: '',
-
-      bodyLeft: '',
-      bodyRight: '',
-      bodyJoin: '',
-
-      joinBody: '',
-      joinLeft: '',
-      joinRight: '',
-      joinJoin: ''
-    };
-  }
-
-  throw new Error('Unknown border template "' + name + '".');
-}
-```
-- example usage
-```shell
-n/a
 ```
 
 
