@@ -1,6 +1,6 @@
 # npmdoc-table
 
-#### api documentation for  [table (v4.0.1)](https://github.com/gajus/table#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-table.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-table) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-table.svg)](https://travis-ci.org/npmdoc/node-npmdoc-table)
+#### basic api documentation for  [table (v4.0.1)](https://github.com/gajus/table#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-table.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-table) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-table.svg)](https://travis-ci.org/npmdoc/node-npmdoc-table)
 
 #### Formats data into a string table.
 
@@ -101,7 +101,8 @@
         "prepublish": "NODE_ENV=production npm run build",
         "test": "npm run build && nyc --check-coverage mocha"
     },
-    "version": "4.0.1"
+    "version": "4.0.1",
+    "bin": {}
 }
 ```
 
